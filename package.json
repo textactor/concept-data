@@ -34,6 +34,8 @@
   },
   "homepage": "https://github.com/textactor/concept-data#readme",
   "devDependencies": {
+    "@types/joi": "^13.0.7",
+    "@types/ms": "^0.7.30",
     "@types/node": "latest",
     "ava": "^0.23.0",
     "rimraf": "^2.6.2",
@@ -41,7 +43,9 @@
   },
   "dependencies": {
     "@textactor/domain": "^0.1.4",
-    "aws-sdk": "^2.226.1",
-    "dynamodb": "^1.1.1"
+    "dynamodb": "^1.1.1",
+    "joi": "^13.2.0",
+    "mongoose": "^5.0.15",
+    "ms": "^2.1.1"
   }
 }
