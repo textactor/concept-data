@@ -2,7 +2,7 @@ import { DynamoModel } from "./dynamoModel";
 import { Concept } from "@textactor/concept-domain";
 import { DynamoModelOptions } from "./dynamoModelOptions";
 import * as Joi from 'joi';
-import { LANG_REG, COUNTRY_REG } from "./helpers";
+import { LANG_REG, COUNTRY_REG } from "../helpers";
 import ms = require('ms');
 
 export class ConceptModel extends DynamoModel<Concept, string> {

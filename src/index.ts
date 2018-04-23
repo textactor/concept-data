@@ -1,5 +1,5 @@
 
-export function hello(name: string): string {
-    const text = `Hello ${name}`;
-    return text;
-}
+export { ConceptRepository } from './conceptRepository';
+export { ConceptRootNameRepository } from './conceptRootNameRepository';
+export { WikiSearchNameRepository } from './wikiSearchNameRepository';
+export { WikiTitleRepository } from './wikiTitleRepository';
