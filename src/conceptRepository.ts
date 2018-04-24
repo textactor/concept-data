@@ -5,21 +5,24 @@ import { MongoRepository } from './mongo/mongoRepository';
 export class ConceptRepository extends MongoRepository<string, Concept> implements IConceptRepository {
     getByNameHash(hash: string): Promise<Concept[]> {
         return this.model.list({
-            where: { nameHash: hash }
+            where: { nameHash: hash },
+            limit: 500,
         });
     }
     getByRootNameId(id: string): Promise<Concept[]> {
         return this.model.list({
             where: {
                 rootNameId: id
-            }
+            },
+            limit: 500,
         })
     }
     getByRootNameIds(ids: string[]): Promise<Concept[]> {
         return this.model.list({
             where: {
                 rootNameId: { $in: ids }
-            }
+            },
+            limit: 500,
         });
     }
     list(locale: Locale, limit: number, skip?: number): Promise<Concept[]> {
@@ -38,6 +41,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
                 lang: locale.lang,
                 country: locale.country,
                 abbr: { $exists: true },
+                limit: 500,
             }
         });
     }
@@ -47,6 +51,8 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
                 lang: locale.lang,
                 country: locale.country,
                 contextNames: { $exists: true, $not: { $size: 0 } },
+                isAbbr: true,
+                limit: 500,
             }
         });
     }
