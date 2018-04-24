@@ -48,13 +48,12 @@ export class MongoRepository<ID, T> implements IRepository<ID, T> {
         });
     }
 
-    async createOrUpdate(data: T): Promise<T> {
-        const exists = await this.exists((<any>data).id);
-        if (exists) {
-            return this.update({
-                item: data
-            });
-        }
-        return this.create(data);
+    createOrUpdate(item: T): Promise<T> {
+        return this.create(item).catch(error => {
+            if (error.code && error.code === 11000) {
+                return this.update({ item });
+            }
+            return Promise.reject(error);
+        });
     }
 }
