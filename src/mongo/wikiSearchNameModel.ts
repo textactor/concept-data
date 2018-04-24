@@ -48,17 +48,16 @@ const ModelSchema = new Schema({
         type: [String],
         max: 50,
         required: true,
-        index: true,
     },
 
     createdAt: {
-        type: Number,
+        type: Date,
         default: Date.now,
         required: true,
         expires: '10 days',
     },
     lastSearchAt: {
-        type: Number,
+        type: Date,
         default: Date.now,
         required: true
     },

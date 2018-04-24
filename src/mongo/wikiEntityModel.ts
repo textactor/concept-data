@@ -1,14 +1,14 @@
 import { Schema, Connection } from "mongoose";
-import { LANG_REG, COUNTRY_REG } from "../helpers";
+import { LANG_REG } from "../helpers";
 import { MongoModel } from "./mongoModel";
-import { Concept } from "@textactor/concept-domain";
+import { WikiEntity } from "@textactor/concept-domain";
 
-export class ConceptModel extends MongoModel<Concept> {
+export class WikiEntityModel extends MongoModel<WikiEntity> {
     constructor(connection: Connection) {
-        super(connection.model('Concept', ModelSchema));
+        super(connection.model('WikiEntity', ModelSchema));
     }
 
-    protected transformItem(item: any): Concept {
+    protected transformItem(item: any): WikiEntity {
         const data = super.transformItem(item);
 
         if (data) {
@@ -29,32 +29,21 @@ const ModelSchema = new Schema({
         required: true,
         index: true,
     },
-    country: {
-        type: String,
-        match: COUNTRY_REG,
-        required: true,
-        index: true,
-    },
     name: {
         type: String,
         minlength: 2,
         maxlength: 200,
         required: true,
     },
-    knownName: {
+    simpleName: {
         type: String,
         minlength: 2,
         maxlength: 200,
     },
-    nameLength: {
-        type: Number,
-        required: true,
-    },
-    normalName: {
+    specialName: {
         type: String,
-        minlength: 2,
+        minlength: 1,
         maxlength: 200,
-        required: true,
     },
     nameHash: {
         type: String,
@@ -62,45 +51,69 @@ const ModelSchema = new Schema({
         maxlength: 40,
         required: true,
     },
-    rootNameId: {
-        type: String,
-        minlength: 16,
-        maxlength: 40,
+    names: {
+        type: [String],
         required: true,
+    },
+    namesHashes: {
+        type: [String],
         index: true,
+        required: true,
+    },
+    partialNames: {
+        type: [String],
+        required: true,
+    },
+    partialNamesHashes: {
+        type: [String],
+        index: true,
+        required: true,
+    },
+    secondaryNames: {
+        type: [String],
     },
     abbr: {
         type: String,
-        index: true,
     },
-    abbrLongNames: [String],
-    contextNames: [String],
-    popularity: {
-        type: Number,
-        required: true,
-        index: true,
+    description: {
+        type: String
     },
-    countWords: {
-        type: Number,
-        required: true,
-        index: true,
+    aliases: {
+        type: [String]
     },
-    isAbbr: {
-        type: Boolean,
-        required: true,
-        index: true,
+    about: {
+        type: String
     },
-    endsWithNumber: {
-        type: Boolean,
-        required: true,
+    wikiDataId: {
+        type: String
     },
-    isIrregular: {
-        type: Boolean,
-        required: true,
+    wikiPageId: {
+        type: Number
     },
-    context: {
+    wikiPageTitle: {
+        type: String
+    },
+    type: {
+        type: String
+    },
+    types: {
+        type: [String]
+    },
+    countryCode: {
+        type: String
+    },
+    rank: {
+        type: Number
+    },
+    categories: {
+        type: [String]
+    },
+    data: {
+        type: Schema.Types.Mixed
+    },
+    lastname: {
         type: String,
-        maxlength: 500,
+        index: true,
     },
 
     createdAt: {
@@ -110,7 +123,7 @@ const ModelSchema = new Schema({
         expires: '15 days',
     },
 }, {
-        collection: 'textactor_concepts'
+        collection: 'textactor_wikientities'
     });
 
 ModelSchema.set('toObject', {

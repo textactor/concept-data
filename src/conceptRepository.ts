@@ -46,7 +46,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             where: {
                 lang: locale.lang,
                 country: locale.country,
-                contextNames: { $exists: true, $size: { $gt: 0 } },
+                contextNames: { $exists: true, $not: { $size: 0 } },
             }
         });
     }
@@ -112,6 +112,17 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             where: {
                 rootNameId: { $in: ids }
             }
+        });
+    }
+    createOrUpdate(item: Concept): Promise<Concept> {
+        return this.create(item).catch(error => {
+            if (error.code && error.code === 11000) {
+                return this.getById(item.id).then(dbItem => {
+                    item.popularity = dbItem.popularity + 1;
+                    return this.update({ item });
+                });
+            }
+            return Promise.reject(error);
         });
     }
 }

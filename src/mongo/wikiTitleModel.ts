@@ -40,13 +40,13 @@ const ModelSchema = new Schema({
     },
 
     createdAt: {
-        type: Number,
+        type: Date,
         default: Date.now,
         required: true,
         expires: '10 days',
     },
     lastSearchAt: {
-        type: Number,
+        type: Date,
         default: Date.now,
         required: true
     },
