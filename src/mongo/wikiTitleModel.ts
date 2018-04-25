@@ -34,7 +34,9 @@ export class WikiTitleModel extends MongoModel<WikiTitle> {
         if (data.set) {
             const updatedAt = data.set.updatedAt || unixTimestamp();
             data.set = <any>{ updatedAt };
-            (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+            if (typeof data.set.updatedAt === 'number') {
+                (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+            }
         }
         return super.beforeUpdating(data);
     }

@@ -31,7 +31,9 @@ export class ConceptModel extends MongoModel<Concept> {
         if (data.set) {
             delete data.set.createdAt;
             data.set.updatedAt = data.set.updatedAt || unixTimestamp();
-            (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+            if (typeof data.set.updatedAt === 'number') {
+                (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+            }
         }
         return super.beforeUpdating(data);
     }
