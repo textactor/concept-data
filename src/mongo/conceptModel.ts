@@ -1,6 +1,6 @@
 import { Schema, Connection } from "mongoose";
-import { LANG_REG, COUNTRY_REG } from "../helpers";
-import { MongoModel } from "./mongoModel";
+import { LANG_REG, COUNTRY_REG, unixTimestamp } from "../helpers";
+import { MongoModel, MongoUpdateData } from "./mongoModel";
 import { Concept } from "@textactor/concept-domain";
 
 export class ConceptModel extends MongoModel<Concept> {
@@ -18,6 +18,22 @@ export class ConceptModel extends MongoModel<Concept> {
         }
 
         return data;
+    }
+    protected beforeCreating(data: Concept) {
+        data.createdAt = data.createdAt || unixTimestamp();
+        data.updatedAt = data.updatedAt || data.createdAt;
+        (<any>data).createdAt = new Date(data.createdAt * 1000);
+        (<any>data).updatedAt = new Date(data.updatedAt * 1000);
+        return super.beforeCreating(data);
+    }
+
+    protected beforeUpdating(data: MongoUpdateData<Concept>) {
+        if (data.set) {
+            delete data.set.createdAt;
+            data.set.updatedAt = data.set.updatedAt || unixTimestamp();
+            (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+        }
+        return super.beforeUpdating(data);
     }
 }
 
@@ -108,6 +124,11 @@ const ModelSchema = new Schema({
         default: Date.now,
         required: true,
         expires: '15 days',
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+        required: true,
     },
 }, {
         collection: 'textactor_concepts'

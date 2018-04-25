@@ -3,12 +3,6 @@ import { IConceptRepository, Concept, Locale } from '@textactor/concept-domain';
 import { MongoRepository } from './mongo/mongoRepository';
 
 export class ConceptRepository extends MongoRepository<string, Concept> implements IConceptRepository {
-    getByNameHash(hash: string): Promise<Concept[]> {
-        return this.model.list({
-            where: { nameHash: hash },
-            limit: 500,
-        });
-    }
     getByRootNameId(id: string): Promise<Concept[]> {
         return this.model.list({
             where: {
@@ -87,6 +81,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
                 lang: locale.lang,
                 country: locale.country,
                 countWords: 1,
+                isAbbr: false,
                 popularity: { $lt: popularity },
             }
         });
@@ -106,13 +101,6 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             }
         });
     }
-    deleteByNameHash(hashes: string[]): Promise<number> {
-        return this.model.remove({
-            where: {
-                nameHash: { $in: hashes }
-            }
-        });
-    }
     deleteByRootNameIds(ids: string[]): Promise<number> {
         return this.model.remove({
             where: {
@@ -124,8 +112,13 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
         return this.create(item).catch(error => {
             if (error.code && error.code === 11000) {
                 return this.getById(item.id).then(dbItem => {
-                    item.popularity = dbItem.popularity + 1;
-                    return this.update({ item });
+                    if (dbItem) {
+                        item.popularity = dbItem.popularity + 1;
+                        return this.update({ item });
+                    } else {
+                        console.log(`!NOT found concept on updating: ${item.name}`);
+                        // return delay(500).then()
+                    }
                 });
             }
             return Promise.reject(error);

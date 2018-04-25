@@ -67,8 +67,13 @@ export class ConceptRootNameRepository extends MongoRepository<string, RootName>
         return this.create(item).catch(error => {
             if (error.code && error.code === 11000) {
                 return this.getById(item.id).then(dbItem => {
-                    item.popularity = dbItem.popularity + 1;
-                    return this.update({ item });
+                    if (dbItem) {
+                        item.popularity = dbItem.popularity + 1;
+                        return this.update({ item });
+                    } else {
+                        console.log(`!NOT found concept on updating: ${item.name}`);
+                        // return delay(500).then()
+                    }
                 });
             }
             return Promise.reject(error);

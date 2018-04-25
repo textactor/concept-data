@@ -1,6 +1,6 @@
 import { Schema, Connection } from "mongoose";
-import { LANG_REG, COUNTRY_REG } from "../helpers";
-import { MongoModel } from "./mongoModel";
+import { LANG_REG, COUNTRY_REG, unixTimestamp } from "../helpers";
+import { MongoModel, MongoUpdateData } from "./mongoModel";
 import { WikiSearchName } from "@textactor/concept-domain";
 
 export class WikiSearchNameModel extends MongoModel<WikiSearchName> {
@@ -15,12 +15,28 @@ export class WikiSearchNameModel extends MongoModel<WikiSearchName> {
             if (data.createdAt) {
                 data.createdAt = Math.round(new Date(data.createdAt).getTime() / 1000);
             }
-            if (data.lastSearchAt) {
-                data.lastSearchAt = Math.round(new Date(data.lastSearchAt).getTime() / 1000);
+            if (data.updatedAt) {
+                data.updatedAt = Math.round(new Date(data.updatedAt).getTime() / 1000);
             }
         }
 
         return data;
+    }
+    protected beforeCreating(data: WikiSearchName) {
+        data.createdAt = data.createdAt || unixTimestamp();
+        data.updatedAt = data.updatedAt || data.createdAt;
+        (<any>data).createdAt = new Date(data.createdAt * 1000);
+        (<any>data).updatedAt = new Date(data.updatedAt * 1000);
+        return super.beforeCreating(data);
+    }
+
+    protected beforeUpdating(data: MongoUpdateData<WikiSearchName>) {
+        if (data.set) {
+            const updatedAt = data.set.updatedAt || unixTimestamp();
+            data.set = <any>{ updatedAt };
+            (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
+        }
+        return super.beforeUpdating(data);
     }
 }
 
@@ -43,23 +59,16 @@ const ModelSchema = new Schema({
         maxlength: 500,
         required: true,
     },
-
-    foundTitles: {
-        type: [String],
-        max: 50,
-        required: true,
-    },
-
     createdAt: {
         type: Date,
         default: Date.now,
         required: true,
-        expires: '10 days',
     },
-    lastSearchAt: {
+    updatedAt: {
         type: Date,
         default: Date.now,
-        required: true
+        required: true,
+        expires: '10 days',
     },
 }, {
         collection: 'textactor_wikiSearchName'

@@ -96,12 +96,13 @@ export class MongoModel<T> {
     }
 
 
-    protected beforeCreating(data: any) {
-        data._id = data._id || data.id;
+    protected beforeCreating(data: T) {
+        const ndata: any = data;
+        ndata._id = ndata._id || ndata.id;
         return data;
     }
 
-    protected beforeUpdating(data: any) {
+    protected beforeUpdating(data: MongoUpdateData<T>) {
         // data._id = data._id || data.id;
         return data;
     }
