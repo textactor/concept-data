@@ -1,6 +1,6 @@
 import { IWikiEntityRepository, WikiEntity } from '@textactor/concept-domain';
 import { MongoRepository } from './mongo/mongoRepository';
-import { uniq } from '@textactor/domain';
+import { uniq, NameHelper } from '@textactor/domain';
 
 export class WikiEntityRepository extends MongoRepository<string, WikiEntity> implements IWikiEntityRepository {
     getByNameHash(hash: string): Promise<WikiEntity[]> {
@@ -24,5 +24,30 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
     }
     count(): Promise<number> {
         throw new Error("Method not implemented.");
+    }
+    getInvalidPartialNames(lang: string): Promise<string[]> {
+        const container: { [index: string]: boolean } = {}
+
+        return this.model.list({
+            where: {
+                lang: lang,
+                type: 'PERSON'
+            },
+            limit: 500
+        })
+            .then(list => {
+                for (let item of list) {
+                    item.names.forEach(name => {
+                        if (NameHelper.countWords(name) < 2 || NameHelper.isAbbr(name)) {
+                            return
+                        }
+                        const parts = name.split(/\s+/g).filter(it => !NameHelper.isAbbr(it) && it.length > 1);
+                        for (let it of parts) {
+                            container[it] = true;
+                        }
+                    });
+                }
+            })
+            .then(() => Promise.resolve(Object.keys(container)));
     }
 }
