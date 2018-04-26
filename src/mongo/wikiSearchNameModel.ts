@@ -65,12 +65,12 @@ const ModelSchema = new Schema({
         type: Date,
         default: Date.now,
         required: true,
+        expires: '5 days',
     },
     updatedAt: {
         type: Date,
         default: Date.now,
         required: true,
-        expires: '10 days',
     },
 }, {
         collection: 'textactor_wikiSearchName'

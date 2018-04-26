@@ -129,11 +129,6 @@ const ModelSchema = new Schema({
     data: {
         type: Schema.Types.Mixed
     },
-    lastname: {
-        type: String,
-        index: true,
-    },
-
     createdAt: {
         type: Date,
         default: Date.now,
