@@ -6,7 +6,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
     getByRootNameId(id: string): Promise<Concept[]> {
         return this.model.list({
             where: {
-                rootNameId: id
+                rootNameIds: id
             },
             limit: 500,
         })
@@ -14,7 +14,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
     getByRootNameIds(ids: string[]): Promise<Concept[]> {
         return this.model.list({
             where: {
-                rootNameId: { $in: ids }
+                rootNameIds: { $in: ids }
             },
             limit: 500,
         });
@@ -104,7 +104,7 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
     deleteByRootNameIds(ids: string[]): Promise<number> {
         return this.model.remove({
             where: {
-                rootNameId: { $in: ids }
+                rootNameIds: { $in: ids }
             }
         });
     }

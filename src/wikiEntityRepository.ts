@@ -5,7 +5,7 @@ import { NameHelper } from '@textactor/domain';
 export class WikiEntityRepository extends MongoRepository<string, WikiEntity> implements IWikiEntityRepository {
     getByNameHash(hash: string): Promise<WikiEntity[]> {
         return this.model.list({
-            where: { nameHash: hash },
+            where: { namesHashes: hash },
             limit: 100,
         });
     }
@@ -34,7 +34,7 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
                         if (NameHelper.countWords(name) < 2 || NameHelper.isAbbr(name)) {
                             return
                         }
-                        const parts = name.split(/\s+/g).filter(it => !NameHelper.isAbbr(it) && it.length > 1 && name[0] !== '(' && name.toLowerCase() !== name);
+                        const parts = name.split(/\s+/g).filter(it => !NameHelper.isAbbr(it) && it.length > 1 && it[0] !== '(' && it.toLowerCase() !== name);
                         for (let it of parts) {
                             container[it] = true;
                         }

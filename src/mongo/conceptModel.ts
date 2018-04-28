@@ -80,10 +80,9 @@ const ModelSchema = new Schema({
         maxlength: 40,
         required: true,
     },
-    rootNameId: {
-        type: String,
-        minlength: 16,
-        maxlength: 40,
+    rootNameIds: {
+        type: [String],
+        min: 1,
         required: true,
         index: true,
     },
