@@ -65,7 +65,7 @@ const ModelSchema = new Schema({
         type: Date,
         default: Date.now,
         required: true,
-        expires: '5 days',
+        expires: '4 days',
     },
     updatedAt: {
         type: Date,

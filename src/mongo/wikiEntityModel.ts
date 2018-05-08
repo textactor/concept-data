@@ -117,8 +117,8 @@ const ModelSchema = new Schema({
     types: {
         type: [String]
     },
-    countryCode: {
-        type: String
+    countryCodes: {
+        type: [String]
     },
     rank: {
         type: Number
