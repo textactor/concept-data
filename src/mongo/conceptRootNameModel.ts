@@ -30,6 +30,7 @@ export class ConceptRootNameModel extends MongoModel<RootName> {
     protected beforeUpdating(data: MongoUpdateData<RootName>) {
         if (data.set) {
             delete data.set.createdAt;
+            delete data.set.containerId;
             data.set.updatedAt = data.set.updatedAt || unixTimestamp();
             if (typeof data.set.updatedAt === 'number') {
                 (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
@@ -51,6 +52,11 @@ const ModelSchema = new Schema({
     country: {
         type: String,
         match: COUNTRY_REG,
+        required: true,
+        index: true,
+    },
+    containerId: {
+        type: String,
         required: true,
         index: true,
     },

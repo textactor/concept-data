@@ -29,21 +29,19 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             offset: skip || 0,
         });
     }
-    getConceptsWithAbbr(locale: Locale): Promise<Concept[]> {
+    getConceptsWithAbbr(containerId: string): Promise<Concept[]> {
         return this.model.list({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 abbr: { $exists: true },
                 limit: 500,
             }
         });
     }
-    getAbbrConceptsWithContextName(locale: Locale): Promise<Concept[]> {
+    getAbbrConceptsWithContextName(containerId: string): Promise<Concept[]> {
         return this.model.list({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 contextNames: { $exists: true, $not: { $size: 0 } },
                 isAbbr: true,
                 limit: 500,
@@ -56,42 +54,36 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             count: locale.country,
         });
     }
-    deleteUnpopular(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopular(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteUnpopularAbbreviations(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopularAbbreviations(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 isAbbr: true,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteUnpopularOneWorlds(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopularOneWorlds(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 countWords: 1,
                 isAbbr: false,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteAll(locale: Locale): Promise<number> {
+    deleteAll(containerId: string): Promise<number> {
         return this.model.remove({
-            where: {
-                lang: locale.lang,
-                country: locale.country,
-            }
+            where: { containerId }
         });
     }
     deleteIds(ids: string[]): Promise<number> {

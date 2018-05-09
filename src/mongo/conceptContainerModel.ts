@@ -1,14 +1,14 @@
 import { Schema, Connection } from "mongoose";
 import { LANG_REG, COUNTRY_REG, unixTimestamp } from "../helpers";
 import { MongoModel, MongoUpdateData } from "./mongoModel";
-import { Concept } from "@textactor/concept-domain";
+import { ConceptContainer } from "@textactor/concept-domain";
 
-export class ConceptModel extends MongoModel<Concept> {
+export class ConceptContainerModel extends MongoModel<ConceptContainer> {
     constructor(connection: Connection) {
-        super(connection.model('Concept', ModelSchema));
+        super(connection.model('ConceptContainer', ModelSchema));
     }
 
-    protected transformItem(item: any): Concept {
+    protected transformItem(item: any): ConceptContainer {
         const data = super.transformItem(item);
 
         if (data) {
@@ -19,7 +19,7 @@ export class ConceptModel extends MongoModel<Concept> {
 
         return data;
     }
-    protected beforeCreating(data: Concept) {
+    protected beforeCreating(data: ConceptContainer) {
         data.createdAt = data.createdAt || unixTimestamp();
         data.updatedAt = data.updatedAt || data.createdAt;
         (<any>data).createdAt = new Date(data.createdAt * 1000);
@@ -27,10 +27,9 @@ export class ConceptModel extends MongoModel<Concept> {
         return super.beforeCreating(data);
     }
 
-    protected beforeUpdating(data: MongoUpdateData<Concept>) {
+    protected beforeUpdating(data: MongoUpdateData<ConceptContainer>) {
         if (data.set) {
             delete data.set.createdAt;
-            delete data.set.containerId;
             data.set.updatedAt = data.set.updatedAt || unixTimestamp();
             if (typeof data.set.updatedAt === 'number') {
                 (<any>data.set).updatedAt = new Date(data.set.updatedAt * 1000);
@@ -60,70 +59,26 @@ const ModelSchema = new Schema({
         maxlength: 200,
         required: true,
     },
-    knownName: {
-        type: String,
-        minlength: 2,
-        maxlength: 200,
-    },
-    nameLength: {
-        type: Number,
-        required: true,
-    },
-    normalName: {
+    uniqueName: {
         type: String,
         minlength: 2,
         maxlength: 200,
         required: true,
+        unique: true,
     },
-    nameHash: {
+    status: {
         type: String,
-        minlength: 16,
-        maxlength: 40,
-        required: true,
-    },
-    rootNameIds: {
-        type: [String],
-        min: 1,
+        minlength: 1,
+        maxlength: 50,
         required: true,
         index: true,
     },
-    abbr: {
+    ownerId: {
         type: String,
+        minlength: 1,
+        maxlength: 50,
         index: true,
-    },
-    abbrLongNames: [String],
-    contextNames: [String],
-    popularity: {
-        type: Number,
         required: true,
-        index: true,
-    },
-    countWords: {
-        type: Number,
-        required: true,
-        index: true,
-    },
-    isAbbr: {
-        type: Boolean,
-        required: true,
-        index: true,
-    },
-    endsWithNumber: {
-        type: Boolean,
-        required: true,
-    },
-    isIrregular: {
-        type: Boolean,
-        required: true,
-    },
-    context: {
-        type: String,
-        maxlength: 500,
-    },
-    containerId: {
-        type: String,
-        required: true,
-        index: true,
     },
 
     createdAt: {
@@ -138,7 +93,7 @@ const ModelSchema = new Schema({
         required: true,
     },
 }, {
-        collection: 'textactor_concepts'
+        collection: 'textactor_conceptContainers'
     });
 
 ModelSchema.set('toObject', {

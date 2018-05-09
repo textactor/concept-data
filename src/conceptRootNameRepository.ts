@@ -1,15 +1,14 @@
 
-import { IConceptRootNameRepository, RootName, Locale } from '@textactor/concept-domain';
+import { IConceptRootNameRepository, RootName } from '@textactor/concept-domain';
 import { MongoRepository } from './mongo/mongoRepository';
 
 export class ConceptRootNameRepository extends MongoRepository<string, RootName> implements IConceptRootNameRepository {
-    getMostPopularIds(locale: Locale, limit: number, skip: number, minCountWords?: number): Promise<string[]> {
+    getMostPopularIds(containerId: string, limit: number, skip: number, minCountWords?: number): Promise<string[]> {
         minCountWords = minCountWords || 1;
 
         return this.model.list({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 countWords: { $gte: minCountWords },
             },
             limit: limit,
@@ -18,41 +17,35 @@ export class ConceptRootNameRepository extends MongoRepository<string, RootName>
             select: '_id',
         }).then(list => list && list.map(item => item.id));
     }
-    deleteUnpopular(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopular(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteUnpopularAbbreviations(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopularAbbreviations(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 isAbbr: true,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteUnpopularOneWorlds(locale: Locale, popularity: number): Promise<number> {
+    deleteUnpopularOneWorlds(containerId: string, popularity: number): Promise<number> {
         return this.model.remove({
             where: {
-                lang: locale.lang,
-                country: locale.country,
+                containerId,
                 countWords: 1,
                 popularity: { $lt: popularity },
             }
         });
     }
-    deleteAll(locale: Locale): Promise<number> {
+    deleteAll(containerId: string): Promise<number> {
         return this.model.remove({
-            where: {
-                lang: locale.lang,
-                country: locale.country,
-            }
+            where: { containerId }
         });
     }
     deleteIds(ids: string[]): Promise<number> {
