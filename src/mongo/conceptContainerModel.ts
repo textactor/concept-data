@@ -80,7 +80,10 @@ const ModelSchema = new Schema({
         index: true,
         required: true,
     },
-
+    lastError: {
+        type: String,
+        maxlength: 800,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

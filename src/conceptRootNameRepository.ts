@@ -13,7 +13,7 @@ export class ConceptRootNameRepository extends MongoRepository<string, RootName>
             },
             limit: limit,
             offset: skip,
-            sort: '-popularity',
+            sort: '-popularity,createdAt',
             select: '_id',
         }).then(list => list && list.map(item => item.id));
     }

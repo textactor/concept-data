@@ -18,29 +18,45 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
     count(): Promise<number> {
         throw new Error("Method not implemented.");
     }
-    getInvalidPartialNames(lang: string): Promise<string[]> {
+    async getInvalidPartialNames(lang: string): Promise<string[]> {
         const container: { [index: string]: boolean } = {}
 
-        return this.model.list({
+        function processList(list: WikiEntity[]) {
+            for (let item of list) {
+                item.names.forEach(name => {
+                    if (NameHelper.countWords(name) < 2 || NameHelper.isAbbr(name)) {
+                        return
+                    }
+                    const parts = name.split(/\s+/g).filter(it => !NameHelper.isAbbr(it) && it.length > 1 && it[0] !== '(' && it.toLowerCase() !== it);
+                    for (let it of parts) {
+                        container[it] = true;
+                    }
+                });
+            }
+        }
+
+        let list = await this.model.list({
             where: {
                 lang: lang,
                 type: WikiEntityType.PERSON,
             },
             limit: 500
-        })
-            .then(list => {
-                for (let item of list) {
-                    item.names.forEach(name => {
-                        if (NameHelper.countWords(name) < 2 || NameHelper.isAbbr(name)) {
-                            return
-                        }
-                        const parts = name.split(/\s+/g).filter(it => !NameHelper.isAbbr(it) && it.length > 1 && it[0] !== '(' && it.toLowerCase() !== name);
-                        for (let it of parts) {
-                            container[it] = true;
-                        }
-                    });
-                }
-            })
-            .then(() => Promise.resolve(Object.keys(container)));
+        });
+
+        processList(list);
+
+        if (list.length === 500) {
+            list = await this.model.list({
+                where: {
+                    lang: lang,
+                    type: WikiEntityType.PERSON,
+                },
+                limit: 500
+            });
+            processList(list);
+        }
+
+        return Object.keys(container);
     }
 }
+
