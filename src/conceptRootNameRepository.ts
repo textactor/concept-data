@@ -1,17 +1,25 @@
 
-import { IConceptRootNameRepository, RootName } from '@textactor/concept-domain';
+import { IConceptRootNameRepository, RootName, RootNamePopularIdsOptions } from '@textactor/concept-domain';
 import { MongoRepository } from './mongo/mongoRepository';
+import { MongoParamsWhere } from './mongo/mongoModel';
 
 export class ConceptRootNameRepository extends MongoRepository<string, RootName> implements IConceptRootNameRepository {
-    getMostPopularIds(containerId: string, limit: number, skip: number, minCountWords?: number): Promise<string[]> {
-        minCountWords = minCountWords || 1;
+    getMostPopularIds(containerId: string, limit: number, skip: number, options?: RootNamePopularIdsOptions): Promise<string[]> {
+        options = options || {};
+
+        const where: MongoParamsWhere = { containerId };
+        if (options.minCountWords) {
+            where.countWords = where.countWords || {};
+            where.countWords.$gte = options.minCountWords;
+        }
+        if (options.maxCountWords) {
+            where.countWords = where.countWords || {};
+            where.countWords.$lse = options.maxCountWords;
+        }
 
         return this.model.list({
-            where: {
-                containerId,
-                countWords: { $gte: minCountWords },
-            },
-            limit: limit,
+            where,
+            limit,
             offset: skip,
             sort: '-popularity,createdAt',
             select: '_id',
