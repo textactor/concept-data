@@ -1,6 +1,6 @@
 {
   "name": "@textactor/concept-data",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Concept data module",
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
