@@ -1,10 +1,10 @@
-import { Schema, Connection } from "mongoose";
+import { Schema } from "mongoose";
 import { LANG_REG, COUNTRY_REG, unixTimestamp } from "../helpers";
 import { MongoModel, MongoUpdateData } from "./mongoModel";
 import { ConceptContainer } from "@textactor/concept-domain";
 
 export class ConceptContainerModel extends MongoModel<ConceptContainer> {
-    constructor(connection: Connection) {
+    constructor(connection: any) {
         super(connection.model('ConceptContainer', ModelSchema));
     }
 

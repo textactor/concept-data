@@ -1,9 +1,9 @@
 import { Model } from 'mongoose';
 
 export class MongoModel<T> {
-
-    constructor(private model: Model<any>) {
-
+    private model: Model<any>
+    constructor(model: any) {
+        this.model = model;
     }
 
     create(data: T): Promise<T> {

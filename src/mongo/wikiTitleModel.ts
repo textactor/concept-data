@@ -1,10 +1,10 @@
-import { Schema, Connection } from "mongoose";
+import { Schema } from "mongoose";
 import { LANG_REG, unixTimestamp } from "../helpers";
 import { MongoModel, MongoUpdateData } from "./mongoModel";
 import { WikiTitle } from "@textactor/concept-domain";
 
 export class WikiTitleModel extends MongoModel<WikiTitle> {
-    constructor(connection: Connection) {
+    constructor(connection: any) {
         super(connection.model('WikiTitle', ModelSchema));
     }
 

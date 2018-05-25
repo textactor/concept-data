@@ -15,6 +15,6 @@ export { WikiTitleRepository } from './wikiTitleRepository';
 export { WikiEntityRepository } from './wikiEntityRepository';
 export { ConceptContainerRepository } from './conceptContainerRepository';
 
-export function createConnection(connectionString: string) {
+export function createConnection(connectionString: string): any {
     return mongoose.createConnection(connectionString);
 }

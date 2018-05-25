@@ -1,10 +1,10 @@
-import { Schema, Connection } from "mongoose";
+import { Schema } from "mongoose";
 import { LANG_REG, COUNTRY_REG, unixTimestamp } from "../helpers";
 import { MongoModel, MongoUpdateData } from "./mongoModel";
 import { RootName } from "@textactor/concept-domain";
 
 export class ConceptRootNameModel extends MongoModel<RootName> {
-    constructor(connection: Connection) {
+    constructor(connection: any) {
         super(connection.model('ConceptRootName', ModelSchema));
     }
 
