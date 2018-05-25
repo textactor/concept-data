@@ -14,9 +14,7 @@
     "postversion": "git push --follow-tags",
     "prepublishOnly": "npm run tsc && npm run clean-test-code",
     "clean": "rimraf ./lib && rimraf ./types",
-    "clean-test-code": "rimraf ./lib/**/*.test.js && rimraf ./types/**/*.test.d.ts",
-    "dev": "yarn remove @textactor/concept-domain && yarn link @textactor/concept-domain",
-    "prod": "yarn unlink @textactor/concept-domain && yarn add @textactor/concept-domain"
+    "clean-test-code": "rimraf ./lib/**/*.test.js && rimraf ./types/**/*.test.d.ts"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -44,7 +42,8 @@
     "typescript": "latest"
   },
   "dependencies": {
-    "@textactor/domain": "^0.1.4",
+    "@textactor/concept-domain": "^0.1.0",
+    "@textactor/domain": "^0.1.5",
     "mongoose": "^5.0.15"
   }
 }
