@@ -14,7 +14,7 @@ export class ConceptRootNameRepository extends MongoRepository<string, RootName>
         }
         if (options.maxCountWords) {
             where.countWords = where.countWords || {};
-            where.countWords.$lse = options.maxCountWords;
+            where.countWords.$lte = options.maxCountWords;
         }
 
         return this.model.list({
