@@ -42,7 +42,7 @@
     "typescript": "latest"
   },
   "dependencies": {
-    "@textactor/concept-domain": "^0.1.0",
+    "@textactor/concept-domain": "^0.1.1",
     "@textactor/domain": "^0.1.5",
     "mongoose": "^5.0.15"
   }

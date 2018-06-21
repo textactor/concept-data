@@ -38,16 +38,6 @@ export class ConceptRepository extends MongoRepository<string, Concept> implemen
             }
         });
     }
-    getAbbrConceptsWithContextName(containerId: string): Promise<Concept[]> {
-        return this.model.list({
-            where: {
-                containerId,
-                contextNames: { $exists: true, $not: { $size: 0 } },
-                isAbbr: true,
-                limit: 500,
-            }
-        });
-    }
     count(locale: Locale): Promise<number> {
         return this.model.count({
             lang: locale.lang,

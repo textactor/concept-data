@@ -69,18 +69,6 @@ const ModelSchema = new Schema({
         type: Number,
         required: true,
     },
-    normalName: {
-        type: String,
-        minlength: 2,
-        maxlength: 200,
-        required: true,
-    },
-    nameHash: {
-        type: String,
-        minlength: 16,
-        maxlength: 40,
-        required: true,
-    },
     rootNameIds: {
         type: [String],
         min: 1,
@@ -91,8 +79,6 @@ const ModelSchema = new Schema({
         type: String,
         index: true,
     },
-    abbrLongNames: [String],
-    contextNames: [String],
     popularity: {
         type: Number,
         required: true,
