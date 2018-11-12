@@ -1,16 +1,22 @@
-import { IWikiEntityRepository, WikiEntity, WikiEntityType } from '@textactor/concept-domain';
-import { MongoRepository } from './mongo/mongoRepository';
-import { NameHelper } from '@textactor/domain';
+import { MongoRepository } from "./mongo-repository";
+import { WikiEntity, WikiEntityType, WikiEntityRepository, WikiEntityValidator } from "@textactor/concept-domain";
+import { NameHelper } from "@textactor/domain";
+import { MongoWikiEntity } from "./mongo-wiki-entity";
 
-export class WikiEntityRepository extends MongoRepository<string, WikiEntity> implements IWikiEntityRepository {
-    getByNameHash(hash: string): Promise<WikiEntity[]> {
-        return this.model.list({
+export class MongoWikiEntityRepository extends MongoRepository<WikiEntity> implements WikiEntityRepository {
+
+    constructor(model: MongoWikiEntity) {
+        super(model, new WikiEntityValidator())
+    }
+
+    getByNameHash(hash: string) {
+        return this.model.find({
             where: { namesHashes: hash },
             limit: 100,
         });
     }
-    getByPartialNameHash(hash: string): Promise<WikiEntity[]> {
-        return this.model.list({
+    getByPartialNameHash(hash: string) {
+        return this.model.find({
             where: { partialNamesHashes: hash },
             limit: 100,
         });
@@ -35,7 +41,7 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
             }
         }
 
-        let list = await this.model.list({
+        let list = await this.model.find({
             where: {
                 lang: lang,
                 type: WikiEntityType.PERSON,
@@ -46,7 +52,7 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
         processList(list);
 
         if (list.length === 500) {
-            list = await this.model.list({
+            list = await this.model.find({
                 where: {
                     lang: lang,
                     type: WikiEntityType.PERSON,
@@ -59,4 +65,3 @@ export class WikiEntityRepository extends MongoRepository<string, WikiEntity> im
         return Object.keys(container);
     }
 }
-
