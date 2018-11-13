@@ -19,7 +19,7 @@ export class MongoLearningText extends MongoItem<LearningText> {
         index[EXPIRES_AT_FIELD] = 1;
 
         await this.collection.createIndex(index, { expireAfterSeconds: 0 });
-        await this.collection.createIndex({ lang: 1, country: 1, createdAt: 1 });
+        await this.collection.createIndex({ lang: 1, country: 1, createdAt: -1 });
     }
 
     protected beforeCreate(data: LearningText) {

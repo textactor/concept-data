@@ -23,7 +23,7 @@ export class MongoLearningTextRepository extends MongoRepository<LearningText>
             },
             limit: filters.limit,
             offset: filters.skip,
-            sort: ['createdAt'],
+            sort: ['-createdAt'],
         };
 
         return this.model.find(selector);
