@@ -59,10 +59,10 @@
     pretty-ms "^0.2.1"
     text-table "^0.2.0"
 
-"@textactor/concept-domain@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@textactor/concept-domain/-/concept-domain-0.2.0.tgz#e6877bb0894215396d0e558d1eb6d44405edc1af"
-  integrity sha512-+AdSNXneP2+J23sQcdDRnpaVIG7oCbEk+0y7IZLZ7k74E7uAThjnprBe0K186RBOWliLIeHVzRBLgGaJ6DH8jA==
+"@textactor/concept-domain@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@textactor/concept-domain/-/concept-domain-0.2.1.tgz#7788d72ec2415cda5fd8be8474547b78676b1855"
+  integrity sha512-bs94Z0FoVzy0OnSbN1eXrUVzh1su1phgkzagJwkhMUtVWRmK4f4l7c4F3RjjYquudW7e2ovhvmjlu40Kuf9YOw==
   dependencies:
     "@textactor/domain" "^0.2.0"
     joi "^14.0.6"

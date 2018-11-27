@@ -1,6 +1,6 @@
 {
   "name": "@textactor/concept-data",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Concept data module",
   "main": "./dest/index.js",
   "types": "./dest/index.d.ts",
@@ -41,7 +41,7 @@
     "typescript": "3.1.6"
   },
   "dependencies": {
-    "@textactor/concept-domain": "^0.2.0",
+    "@textactor/concept-domain": "^0.2.1",
     "@textactor/domain": "^0.2.0",
     "mongo-item": "^0.1.0",
     "mongodb": "^3.1.9"
