@@ -1,14 +1,9 @@
 import { MongoRepository } from "./mongo-repository";
-import { Concept, ConceptRepository, PopularConceptsOptions, ConceptValidator } from "@textactor/concept-domain";
+import { Concept, ConceptRepository, PopularConceptsOptions } from "@textactor/concept-domain";
 import { MongoWhereParams } from "mongo-item";
-import { MongoConcept } from "./mongo-concept";
 
 export class MongoConceptRepository extends MongoRepository<Concept>
     implements ConceptRepository {
-
-    constructor(model: MongoConcept) {
-        super(model, new ConceptValidator())
-    }
 
     getByRootNameId(id: string) {
         return this.model.find({

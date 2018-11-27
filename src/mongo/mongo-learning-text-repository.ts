@@ -1,19 +1,13 @@
 import { MongoRepository } from "./mongo-repository";
 import {
-    LearningTextValidator,
     LearningText,
     LearningTextRepository,
     LearningTextListParams,
 } from "@textactor/concept-domain";
 import { MongoFindParams } from "mongo-item";
-import { MongoLearningText } from "./mongo-learning-text";
 
 export class MongoLearningTextRepository extends MongoRepository<LearningText>
     implements LearningTextRepository {
-
-    constructor(model: MongoLearningText) {
-        super(model, new LearningTextValidator())
-    }
 
     list(filters: LearningTextListParams) {
         const selector: MongoFindParams = {

@@ -1,10 +1,6 @@
 import { MongoRepository } from "./mongo-repository";
-import { WikiSearchName, WikiSearchNameRepository, WikiSearchNameValidator } from "@textactor/concept-domain";
-import { MongoWikiSearchName } from "./mongo-wiki-search-name";
+import { WikiSearchName, WikiSearchNameRepository } from "@textactor/concept-domain";
 
 export class MongoWikiSearchNameRepository extends MongoRepository<WikiSearchName>
     implements WikiSearchNameRepository {
-    constructor(model: MongoWikiSearchName) {
-        super(model, new WikiSearchNameValidator())
-    }
 }

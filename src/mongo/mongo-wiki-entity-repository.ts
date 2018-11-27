@@ -1,13 +1,8 @@
 import { MongoRepository } from "./mongo-repository";
-import { WikiEntity, WikiEntityType, WikiEntityRepository, WikiEntityValidator } from "@textactor/concept-domain";
+import { WikiEntity, WikiEntityType, WikiEntityRepository } from "@textactor/concept-domain";
 import { NameHelper } from "@textactor/domain";
-import { MongoWikiEntity } from "./mongo-wiki-entity";
 
 export class MongoWikiEntityRepository extends MongoRepository<WikiEntity> implements WikiEntityRepository {
-
-    constructor(model: MongoWikiEntity) {
-        super(model, new WikiEntityValidator())
-    }
 
     getByNameHash(hash: string) {
         return this.model.find({

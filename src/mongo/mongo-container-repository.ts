@@ -5,17 +5,11 @@ import {
     ConceptContainerStatus,
     Locale,
     ContainerListFilters,
-    ConceptContainerValidator,
 } from "@textactor/concept-domain";
 import { MongoFindParams } from "mongo-item";
-import { MongoConceptContainer } from "./mongo-container";
 
 export class MongoConceptContainerRepository extends MongoRepository<ConceptContainer>
     implements ConceptContainerRepository {
-
-    constructor(model: MongoConceptContainer) {
-        super(model, new ConceptContainerValidator())
-    }
 
     getByStatus(locale: Locale, status: ConceptContainerStatus[]) {
         return this.model.find({
