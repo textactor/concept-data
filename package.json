@@ -1,23 +1,23 @@
 {
   "name": "@textactor/concept-data",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Concept data module",
-  "main": "./dest/index.js",
-  "types": "./dest/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "pretest": "npm run clean && npm run tsc",
-    "test": "ava --no-cache --verbose dest/**/*.test.js",
+    "test": "ava --no-cache --verbose lib/**/*.test.js",
     "posttest": "npm run clean-test-code",
     "tsc": "tsc",
     "tscw": "tsc -w",
     "preversion": "npm run tsc",
     "postversion": "git push --follow-tags",
     "prepublishOnly": "npm run tsc && npm run clean-test-code",
-    "clean": "rimraf ./dest",
-    "clean-test-code": "rimraf ./dest/**/*.test.js"
+    "clean": "rimraf ./lib",
+    "clean-test-code": "rimraf ./lib/**/*.test.js"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
@@ -34,16 +34,15 @@
   },
   "homepage": "https://github.com/textactor/concept-data#readme",
   "devDependencies": {
-    "@types/mongodb": "^3.1.14",
     "@types/node": "10.12.6",
     "ava": "^0.25.0",
     "rimraf": "^2.6.2",
-    "typescript": "3.1.6"
+    "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@textactor/concept-domain": "^0.2.1",
-    "@textactor/domain": "^0.2.0",
-    "mongo-item": "^0.1.0",
-    "mongodb": "^3.1.9"
+    "@textactor/concept-domain": "^0.3.0",
+    "@textactor/domain": "^0.3.1",
+    "dynamo-item": "^0.1.1",
+    "mongo-item": "^0.2.2"
   }
 }
